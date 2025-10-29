@@ -1,8 +1,7 @@
 void function () {
-  window.events = new Object();
+  var events = new Object();
   
   var defaultParent;
-  
   var possibleParents = new Array(document, window, globalThis);
 
   for (var parentIndex = 0; parentIndex < possibleParents.length; parentIndex++) {
@@ -17,6 +16,14 @@ void function () {
   
     if (typeof parent == "undefined") {
       parent = defaultParent;
+    }
+
+    var parentName = parent.constructor.name;
+
+    if (typeof events[parentName] == "undefined") {
+      events[parentName] = new Object();
+    } else if (typeof events[parentName][event] != "undefined") {
+      return
     }
   
     var eventPolyfill = new Object();
@@ -40,7 +47,7 @@ void function () {
       functionQueue.length = lastFunctionIndex;
     }
   
-    window.events[event] = eventPolyfill;
+    events[parentName][event] = eventPolyfill;
   
     parent[event] = function(context) {
       for (var functionIndex = 0; functionIndex < functionQueue.length; functionIndex++) {
@@ -49,8 +56,9 @@ void function () {
     };
   }
   
+  window.events = events;
   window.createEventPolyfill = createEventPolyfill;
-  
+
   createEventPolyfill("onkeydown", document);
   createEventPolyfill("onresize", window);
 }();
