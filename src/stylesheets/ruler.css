@@ -1,0 +1,5 @@
+.ruler {
+  position: absolute;
+  white-space: nowrap;
+  visibility: hidden;
+}

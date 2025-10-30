@@ -4,10 +4,10 @@ function Catcher() {
   logger.className = "catcher";
   document.body.appendChild(logger);
 
+  this.listenID;
   this.listen();
   createEventPolyfill("oninput", logger);
 
-  this.listenID;
 };
 
 Catcher.prototype.hear = function () {
