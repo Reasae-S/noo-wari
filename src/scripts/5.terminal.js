@@ -52,7 +52,13 @@ Terminal.prototype.adjustCursor = function (y) {
   this.cursor.y = y;
 
   this.reRender(startY);
-  this.reRender(this.cursor.y)
+
+  if (this.cursor.y >= this.terminalSize.y) {
+    this.write("");
+  } else {
+    this.reRender(this.cursor.y);
+  }
+
 }
 
 
@@ -98,6 +104,8 @@ Terminal.prototype.render = function () {
 
     this.display.appendChild(line);
   }
+
+  this.display.scrollTop = this.display.scrollHeight;
 
 };
 
@@ -179,7 +187,7 @@ Terminal.prototype.write = function (message) {
       }
     }
   } else {
-    this.dataRows[this.dataRows.length] = message + "\u00A0".repeat(this.terminal.x - message.length);
+    this.dataRows[this.dataRows.length] = message + "\u00A0".repeat(this.terminalSize.x - message.length);
   }
 
   endIndex = this.cursor.y;
