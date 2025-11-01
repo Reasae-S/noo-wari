@@ -8,11 +8,20 @@ function Shell(host, user, terminal) {
   var self = this;
 
   this.terminal.catcher.stream(
-    function (writing) {
-      self.userWrite(writing.msg);
-      self.gotoPrompt();
+    function (writing, special) {
 
-      var adjust = Math.floor((self.promptLength + writing.pos) / self.terminal.terminalSize.x);
+      if (typeof special != "undefined") {
+        if (special == "Enter") {
+          this.command = "";
+          self.terminal.adjustCursor(self.cursor.y + 1);
+          self.terminal.shiftCursor(0);
+          self.prompt();
+        }
+      }
+
+      self.userWrite(writing.msg);
+
+      var adjust = Math.floor((self.promptLength + writing.pos) / self.terminal.terminalSize.x) + self.promptLine;
       var shift = (self.promptLength + writing.pos) % self.terminal.terminalSize.x
 
       self.terminal.adjustCursor(adjust);
@@ -23,6 +32,7 @@ function Shell(host, user, terminal) {
 
 Shell.prototype.connect = function (terminal) {
   this.terminal = terminal;
+  this.cursor = this.terminal.cursor;
   this.prompt();
 };
 
@@ -40,19 +50,19 @@ Shell.prototype.prompt = function () {
 };
 
 Shell.prototype.gotoPrompt = function () {
-  this.terminal.cursor.x = 0;
-  this.terminal.cursor.y = this.promptLine;
+  this.cursor.x = 0;
+  this.cursor.y = this.promptLine;
 }
 
 Shell.prototype.userWrite = function (msg) {
 
   this.command = this.promptText + msg;
 
-  var startCursorY = this.terminal.cursor.y;
+  var startCursorY = this.cursor.y;
 
   this.gotoPrompt();
   
-  var clearSpace = (Math.abs(startCursorY - this.terminal.cursor.y) + 1) * this.terminal.terminalSize.x;
+  var clearSpace = (Math.abs(startCursorY - this.cursor.y) + 1) * this.terminal.terminalSize.x;
 
   this.terminal.write(
     "\u00A0".repeat(clearSpace)
