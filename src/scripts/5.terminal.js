@@ -42,6 +42,19 @@ Terminal.prototype.blank = function () {
   }
 };
 
+Terminal.prototype.shiftCursor = function (x) {
+  this.cursor.x = x;
+  this.reRender(this.cursor.y);
+}
+
+Terminal.prototype.adjustCursor = function (y) {
+  var startY = this.cursor.y;
+  this.cursor.y = y;
+
+  this.reRender(startY);
+  this.reRender(this.cursor.y)
+}
+
 Terminal.prototype.pullCursor = function () {
   this.cursor.x = 0;
 }
