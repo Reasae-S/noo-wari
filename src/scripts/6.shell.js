@@ -7,11 +7,12 @@ function Shell(host, user, terminal) {
   
   var self = this;
 
-  this.terminal.catcher.stream(
+  this.catcher.stream(
     function (writing, special) {
 
       if (typeof special != "undefined") {
         if (special == "Enter") {
+          this.catcher.clear();
           this.command = "";
           self.terminal.adjustCursor(self.cursor.y + 1);
           self.terminal.shiftCursor(0);
@@ -33,6 +34,7 @@ function Shell(host, user, terminal) {
 Shell.prototype.connect = function (terminal) {
   this.terminal = terminal;
   this.cursor = this.terminal.cursor;
+  this.catcher = this.terminal.catcher;
   this.prompt();
 };
 
