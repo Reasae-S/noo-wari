@@ -57,6 +57,14 @@ Catcher.prototype.stream = function (port) {
 
   this.streamID = this.logger.events.onkeydown.addEvent(function (event) {
 
+    if (event.key == "Enter") {
+      self.logger.value = "";
+      var writing = new Object();
+      writing.msg = "";
+      writing.pos = 0;
+      port(writing, "Enter")
+    }
+
     if (event.shiftKey &&  event.key.substring(0, "Arrow".length) == "Arrow") {
         event.preventDefault();
         return;

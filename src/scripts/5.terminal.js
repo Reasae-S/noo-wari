@@ -55,13 +55,6 @@ Terminal.prototype.adjustCursor = function (y) {
   this.reRender(this.cursor.y)
 }
 
-Terminal.prototype.pullCursor = function () {
-  this.cursor.x = 0;
-}
-
-Terminal.prototype.pushCursor = function () {
-  this.cursor.x = this.terminalSize.x - 1;
-}
 
 Terminal.prototype.wipe = function () {
   this.renderIndex = 0;
