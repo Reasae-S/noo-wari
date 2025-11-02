@@ -13,7 +13,7 @@
   padding: 0;
   margin: 0;
   display: block;
-  color: white;
+  color: rgb(255, 164, 46);
   overflow-y: auto;
   overflow-x: hidden;
   user-select: text;
