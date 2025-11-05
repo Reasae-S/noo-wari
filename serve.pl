@@ -7,7 +7,7 @@ use File::Spec;
 use POSIX qw(strftime);
 
 # Configuration
-my $PORT = 8080;
+my $PORT = 9001;
 my $HOST = '0.0.0.0';
 my $WEB_ROOT = File::Spec->catdir(dirname(__FILE__), 'src');
 my $INDEX_FILE = 'index.html';
