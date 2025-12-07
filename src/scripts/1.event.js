@@ -1,6 +1,6 @@
 void (function () {
   var defaultParent = null;
-  var possibleParents = new Array(document, this);
+  var possibleParents = new Array(document, window);
 
   for (var parentIndex = 0; parentIndex < possibleParents.length; parentIndex++) {
     var possibleParent = possibleParents[parentIndex];
@@ -31,7 +31,7 @@ void (function () {
       var eventID = functionQueue.length;
       functionQueue[eventID] = functionReference;
       return eventID;
-    };
+    }
 
     eventPolyfill.removeEvent = function (eventID) {
       var lastFunctionIndex = functionQueue.length - 1;
@@ -41,7 +41,7 @@ void (function () {
         functionIndex = functionIndex + 1;
       }
       functionQueue.length = lastFunctionIndex;
-    };
+    }
 
     parent.events[event] = eventPolyfill;
 
@@ -51,8 +51,10 @@ void (function () {
         functionQueue[functionIndex](context);
         functionIndex = functionIndex + 1;
       }
-    };
+    }
   }
 
-  this.createEventPolyfill = createEventPolyfill;
+  window.createEventPolyfill = createEventPolyfill;
+  createEventPolyfill("onkeydown", document);
+
 })();
