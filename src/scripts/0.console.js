@@ -1,28 +1,28 @@
 void (function () {
 
-  function setStatus(msg) {
-    window.status = msg;
+  function setStatus(message) {
+    window.status = message;
   }
 
-  function patchConsole(prop, header) {
+  function patchConsole(property, header) {
     header += ": ";
 
-    if (typeof console[prop] != "function") {
-      console[prop] = function (msg) {
-        msg = header + msg;
-        setStatus(msg);
+    if (typeof console[property] != "function") {
+      console[property] = function (message) {
+        message = header + message;
+        setStatus(message);
       }
     } else {
-      var originalFunction = console[prop];
-      console[prop] = function (msg) {
-        msg = header + msg;
-        originalFunction(msg);
-        setStatus(msg);
+      var originalFunction = console[property];
+      console[property] = function (message) {
+        message = header + message;
+        originalFunction(message);
+        setStatus(message);
       }
     }
   }
 
-  var knownFn = new Array(
+  var consoleFunctions = new Array(
     "assert",
     "clear",
     "count",
@@ -48,7 +48,7 @@ void (function () {
     "warn"
   );
 
-  var fnAlias = new Array (
+  var consoleAliases = new Array (
     "ASR",
     "CLR",
     "CNT",
@@ -77,16 +77,15 @@ void (function () {
   if (typeof console != "object") {
     window.console = new Object();
 
-    for (let fnIndex = 0; fnIndex < knownFn.length; fnIndex++) {
-      console[knownFn[knownIndex]] = function (msg) {
-        setStatus(fnAlias[fnIndex] + ": " + msg);
+    for (let functionIndex = 0; functionIndex < consoleFunctions.length; functionIndex++) {
+      console[consoleFunctions[functionIndex]] = function (message) {
+        setStatus(consoleAliases[functionIndex] + ": " + message);
       }
     }
 
   } else {
-    for (let fnIndex = 0; fnIndex < knownFn.length; fnIndex++) {
-      patchConsole(knownFn[fnIndex], fnAlias[fnIndex]);
+    for (let functionIndex = 0; functionIndex < consoleFunctions.length; functionIndex++) {
+      patchConsole(consoleFunctions[functionIndex], consoleAliases[functionIndex]);
     }
   }
-
 })();
