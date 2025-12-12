@@ -1,4 +1,11 @@
-void (function () {
+/*
+  Polyfill for event listeners.
+  Manually handles all listener functions, since
+  older browsers (DOM Level 0) don’t support
+  multiple listeners of the same type on one object.
+*/
+
+oid (function () {
   var defaultParent = null;
   var possibleParents = new Array(document, window);
 

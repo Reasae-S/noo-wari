@@ -1,3 +1,9 @@
+/*
+  Polyfill for the console API.
+  Logs are cast to strings and sent via either
+  the deprecated window.status or patched console methods.
+*/
+
 void (function () {
 
   function setStatus(message) {

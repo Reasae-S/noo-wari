@@ -1,3 +1,9 @@
+/*
+  ASCII-only polyfill for CharCode functions.
+  Generates its own mapping of printable ASCII characters
+  and provides access to information about the character set.
+*/
+
 var CharacterSet;
 
 void (function () {
